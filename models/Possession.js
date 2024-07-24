@@ -4,5 +4,15 @@ class Possession {
     this.type = type;
     this.libelle = libelle;
   }
+
+  getPossesseur() {
+    return this.possesseur;
+  }
+
+  getLibelle() {
+    return this.libelle;
+  }
 }
-module.exports = Possession;
+
+
+export default Possession;
