@@ -1,4 +1,5 @@
 class Person {
+  
   constructor(nom) {
     this.nom = nom;
   }
@@ -6,7 +7,6 @@ class Person {
   getName(){
     return this.nom;
   }
-  
 }
 
 // module.exports = Person;

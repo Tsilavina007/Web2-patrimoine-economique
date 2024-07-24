@@ -1,8 +1,9 @@
 class Possession {
-  constructor(possesseur, type, libelle) {
+  constructor(possesseur, libelle ) {
     this.possesseur = possesseur;
-    this.type = type;
+    this.type = null;
     this.libelle = libelle;
+    // this.solde = solde;
   }
 
   getPossesseur() {
@@ -12,7 +13,31 @@ class Possession {
   getLibelle() {
     return this.libelle;
   }
-}
 
+  getType() {
+    return this.type;
+  }
+
+  getSolde() {
+    return this.solde;
+  }
+
+  getTB() {
+    return this.taux_de_benefice;
+  }
+  
+  getPrix() {
+    return this.prix;
+  }
+  
+  getTA() {
+    return this.taux_d_acroissement;
+  }
+
+  getCout() {
+    return this.cout;
+  }
+
+}
 
 export default Possession;
