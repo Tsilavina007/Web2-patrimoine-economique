@@ -1,20 +1,20 @@
 import Possession from "./Possession.js";
-import Argent from "./argent.js";
-import Materiel from "./materiels.js";
-import TraiDeVie from "./trainDeVie.js";
+import Argent from "./Argent.js";
+import Materiel from "./Materiels.js";
+import TraiDeVie from "./TrainDeVie.js";
 
-import Person from './person.js';
+import Person from './Person.js';
 import Patrimoine from "./Patrimoine.js";
 
 
-let p1 = new Person('tsong') ;
+let p1 = new Person('tsong');
 
 let ar1 = new Argent(p1, "Espèces", 500000);
 let ar2 = new Argent(p1, "Compte bancaire courant", 1000000);
 let ar3 = new Argent(p1, "Compte bancaire épargne", 2500000, 10);
 
-let mat1 = new Materiel(p1,"Ordinateur", 700000, 10);
-let mat2 = new Materiel(p1,"Vetement", 50000, 25);
+let mat1 = new Materiel(p1, "Ordinateur", 700000, 10);
+let mat2 = new Materiel(p1, "Vetement", 50000, 25);
 
 let tr1 = new TraiDeVie(p1, "loyer", 300000);
 let tr2 = new TraiDeVie(p1, "nourriture", 130000);
