@@ -65,6 +65,15 @@ pat1.setPatrimoineWithDate('2034-08-20');
 // Affichage du patrimoine à la nouvelle date
 pat1.showPatrimoine(); // Affiche le patrimoine au 20 août 2034
 ```
+### Remarque Importante
+
+Les dépenses courantes (loyer, nourriture, frais de transport, vacances) sont d'abord déduites directement du compte bancaire courant. Si le solde du compte bancaire courant est insuffisant, les fonds nécessaires sont prélevés dans l'ordre suivant :
+
+1. Espèces
+2. Compte bancaire épargne
+
+Cela assure que les dépenses sont couvertes en utilisant les ressources disponibles de manière ordonnée.
+
 
 ### Exemple : Calcul du Patrimoine de Ilo
 
