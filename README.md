@@ -1,5 +1,3 @@
-### README pour l'Application de Gestion de Patrimoine Économique
-
 # Gestionnaire de Patrimoine Économique
 
 Cette application permet de décrire et de projeter le patrimoine économique d'un étudiant de HEI. L'objectif est de maximiser les trois principales possessions : l'argent, les biens matériels et le train de vie.
