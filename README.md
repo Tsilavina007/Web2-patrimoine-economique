@@ -94,8 +94,8 @@ let ilo = new Person('Ilo');
 
 // Création des actifs financiers pour Ilo
 let espece = new Argent(ilo, "Espèces", 400000);
-let compteEpargne = new Argent(ilo, "Compte bancaire épargne", 200000);
-let compteCourant = new Argent(ilo, "Compte bancaire courant", 600000, 10);
+let compteEpargne = new Argent(ilo, "Compte bancaire épargne", 200000, 10);
+let compteCourant = new Argent(ilo, "Compte bancaire courant", 600000);
 
 // Création des biens matériels pour Ilo
 let ordinateur = new Materiel(ilo, "Ordinateur", 2000000, 10);

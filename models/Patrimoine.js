@@ -24,14 +24,20 @@ class Patrimoine {
   }
 
   getPossessionsWithTypes() {
-    let types_argent = [];
+    let types_argent = [{}, {}, {}];
     let types_trainDeVie = [];
     let types_materiels = [];
 
     this.possessions.forEach(element => {
       switch (element.getType()) {
         case 'argent':
-          types_argent.push(element);
+          if (element.getLibelle() == "Compte bancaire épargne") {  
+            types_argent[0] = element;
+          } else if (element.getLibelle() == "Espèces") {  
+            types_argent[1] = element;
+          } else if (element.getLibelle() == "Compte bancaire courant") {  
+            types_argent[2] = element;
+          }
           break;
         case 'train_de_vie':
           types_trainDeVie.push(element);
@@ -43,7 +49,6 @@ class Patrimoine {
           break;
       }
     });
-    
     let types = {
       types_argent : types_argent,
       types_materiels : types_materiels,
@@ -106,7 +111,7 @@ class Patrimoine {
     const yearDiff = year2 - year1;
     const monthDiff = month2 - month1;
 
-    return (yearDiff * 12) + monthDiff;
+    return (yearDiff * 12) + monthDiff + 1;
   }
 
   differenceInYears(date1, date2) {
@@ -114,10 +119,10 @@ class Patrimoine {
     const jour2 = date2.getDate();
     if (jour2 >= jour1) {      
       const dYear = this.differenceInMonths(date1, date2)/12;
-      return Math.floor(dYear);
+      return Math.floor(dYear) + 1;
     } else { 
-      const dYear = this.differenceInMonths(date1, date2)/12 - 1;
-      return Math.floor(dYear);
+      const dYear = this.differenceInMonths(date1, date2)/12 ;
+      return Math.floor(dYear)?0:Math.floor(dYear) +1;
     }
 }
 
@@ -155,13 +160,54 @@ class Patrimoine {
 
       this.getPossessionsWithTypes().types_argent.forEach(element => {
         if (element.getLibelle() == "Compte bancaire courant") {
+          if (element.getSolde() <= 0) {
+            this.getPossessionsWithTypes().types_argent.forEach(e => {
+              if (e.getLibelle() == "Espèces") {
+                let newEspecesSolde = e.getSolde() - sommeCout;
+                if (newEspecesSolde < 0) {
+                  this.getPossessionsWithTypes().types_argent.forEach(e1 => {
+                    if (e1.getLibelle() == "Compte bancaire épargne") {
+                      let newEparneSolde = e1.getSolde() + newEspecesSolde;
+                      e1.setSolde(newEparneSolde);
+                      e.setSolde(0);
+                    }
+                  });
+                } else {
+                  e.setSolde(newEspecesSolde);
+                }
+              }
+            });
+          } else{
             let newSolde = element.getSolde() * monthsDifference;
             if (newSolde >= sommeCout) {
               newSolde -= sommeCout * monthsDifference;
+              if (newSolde < 0) {
+                this.getPossessionsWithTypes().types_argent.forEach(e => {
+                  if (e.getLibelle() == "Espèces") {
+                    let newEspecesSolde = e.getSolde() + newSolde;
+                    if (newEspecesSolde < 0) {
+                      this.getPossessionsWithTypes().types_argent.forEach(e1 => {
+                        if (e1.getLibelle() == "Compte bancaire épargne") {
+                          let newEparneSolde = e1.getSolde() + newEspecesSolde;
+                          e1.setSolde(newEparneSolde);
+                          e.setSolde(0);
+                        }
+                      });
+                    } else {
+                      e.setSolde(newEspecesSolde);
+                    }
+                  }
+                });
+                element.setSolde(0);
+              }
+              else{
+                element.setSolde(newSolde);
+              }
             }
-            element.setSolde(newSolde)
+          }
         } else if (element.getLibelle() == "Compte bancaire épargne") {
-            let newSolde = element.getSolde() * yearDifference;
+          
+            let newSolde = element.getSolde() * (yearDifference);
             element.setSolde(newSolde)
         } 
         // else if (element.getLibelle() == "Espèces") {
