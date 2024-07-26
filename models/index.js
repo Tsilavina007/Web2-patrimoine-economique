@@ -19,7 +19,7 @@ let mat2 = new Materiel(p1, "Vetement", 50000, 25);
 let tr1 = new TraiDeVie(p1, "loyer", 300000);
 let tr2 = new TraiDeVie(p1, "nourriture", 130000);
 let tr3 = new TraiDeVie(p1, "frais de transport", 70000);
-let tr4 = new TraiDeVie(p1, "vacances", 4000000);
+let tr4 = new TraiDeVie(p1, "vacances", 200000);
 
 
 let pat1 = new Patrimoine(p1, '2024-07-10', []);
@@ -38,9 +38,8 @@ pat1.addPossession(tr4);
 
 // console.log(pat1.getPossessionsWithTypes());
 
-// pat1.showPatrimoine();
+pat1.showPatrimoine();
 
-// pat1.removePossession(pos2);
-// console.log(pat1.getPossessionsWithTypes());
+pat1.setPatrimoineWithDate('2034-08-20')
 
-pat1.getPatrimoineWithDate('2024-08-20')
+pat1.showPatrimoine();

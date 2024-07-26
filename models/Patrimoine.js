@@ -70,7 +70,7 @@ class Patrimoine {
     const dayFormatted = day < 10 ? `0${day}` : day;
     const monthFormatted = month < 10 ? `0${month}` : month;
   
-    return `${dayFormatted}/${monthFormatted}/${year}`;
+    return `${dayFormatted}-${monthFormatted}-${year}`;
   }
 
   showPatrimoine() {
@@ -94,13 +94,14 @@ class Patrimoine {
       showTrainDeVie += "Train De Vie - " +element.getLibelle() + " | cout : " + element.getCout () + "\n";
     })
 
-    console.log("Patrimoine de " +this.getPossesseur().getName() +" le " + this.formatDate(this.getDatePatrimoine())+"\n\n"+showArgent +"\n" + showMateriels + "\n" + showTrainDeVie);
+    console.log("\n\n======================================\nPatrimoine de " +this.getPossesseur().getName() +" le " + this.formatDate(this.getDatePatrimoine())+"\n\n"+showArgent +"\n" + showMateriels + "\n" + showTrainDeVie);
   }
+
   differenceInMonths(date1, date2) {
     const year1 = date1.getFullYear();
-    const month1 = date1.getMonth(); // 0-indexé
+    const month1 = date1.getMonth(); 
     const year2 = date2.getFullYear();
-    const month2 = date2.getMonth(); // 0-indexé
+    const month2 = date2.getMonth(); 
 
     const yearDiff = year2 - year1;
     const monthDiff = month2 - month1;
@@ -109,18 +110,66 @@ class Patrimoine {
   }
 
   differenceInYears(date1, date2) {
-    const year1 = date1.getFullYear();
-    const year2 = date2.getFullYear();
-
-    return Math.abs(year2 - year1);
+    const jour1 = date1.getDate();
+    const jour2 = date2.getDate();
+    if (jour2 >= jour1) {      
+      const dYear = this.differenceInMonths(date1, date2)/12;
+      return Math.floor(dYear);
+    } else { 
+      const dYear = this.differenceInMonths(date1, date2)/12 - 1;
+      return Math.floor(dYear);
+    }
 }
 
-  getPatrimoineWithDate(newDate) {
-    const monthsDifference = this.differenceInMonths(this.getDatePatrimoine(), new Date(newDate));
-    const yearDifference = this.differenceInYears(this.getDatePatrimoine(), new Date(newDate));
+  setPatrimoineWithDate(newDate) {
+      const monthsDifference = this.differenceInMonths(this.getDatePatrimoine(), new Date(newDate));
+      const yearDifference = this.differenceInYears(this.getDatePatrimoine(), new Date(newDate));
 
-    console.log(monthsDifference); 
-    console.log(yearDifference); 
+      this.getPossessionsWithTypes().types_materiels.forEach(element => {
+          if (element.getPrix() >= 0 && yearDifference >= 1 ) {
+            
+              let newPrix = element.getPrix() - (element.getPrix() * element.getTA()* yearDifference / 100);
+              if (newPrix <= 0) {
+                element.setPrix(0);
+              } else {
+                element.setPrix(newPrix);
+              }
+          }
+      });
+
+
+      let elementToRemove = []
+      this.getPossessionsWithTypes().types_materiels.forEach(element => {
+        if (element.getPrix() == 0) {
+          elementToRemove.push(element);
+        }
+      });
+      elementToRemove.forEach(element => {
+        this.removePossession(element);
+      });
+
+      let sommeCout = 0;
+      this.getPossessionsWithTypes().types_trainDeVie.forEach(element => {
+        sommeCout += element.getCout();
+      });
+
+      this.getPossessionsWithTypes().types_argent.forEach(element => {
+        if (element.getLibelle() == "Compte bancaire courant") {
+            let newSolde = element.getSolde() * monthsDifference;
+            if (newSolde >= sommeCout) {
+              newSolde -= sommeCout * monthsDifference;
+            }
+            element.setSolde(newSolde)
+        } else if (element.getLibelle() == "Compte bancaire épargne") {
+            let newSolde = element.getSolde() * yearDifference;
+            element.setSolde(newSolde)
+        } 
+        // else if (element.getLibelle() == "Espèces") {
+        //   console.log("Especes");
+        // }
+    });
+
+    this.date = new Date(newDate);
   }
 
 }

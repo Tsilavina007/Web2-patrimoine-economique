@@ -22,12 +22,20 @@ class Possession {
     return this.solde;
   }
 
+  setSolde(newSolde) {
+      this.solde = newSolde;
+  }
+
   getTB() {
     return this.taux_de_benefice;
   }
   
   getPrix() {
     return this.prix;
+  }
+  
+  setPrix(newPrix) {
+    this.prix = newPrix;
   }
   
   getTA() {

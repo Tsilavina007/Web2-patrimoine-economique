@@ -7,6 +7,8 @@ class Argent extends Possession {
         this.solde = solde;
         this.taux_de_benefice= taux_de_benefice;
     }
+
+    
 }
 
 
