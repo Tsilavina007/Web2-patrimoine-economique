@@ -1,4 +1,3 @@
-import Possession from "./models/Possession.js";
 import Argent from "./models/Argent.js";
 import Materiel from "./models/Materiels.js";
 import TraiDeVie from "./models/TrainDeVie.js";
