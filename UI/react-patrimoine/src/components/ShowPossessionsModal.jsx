@@ -177,14 +177,19 @@ const ShowPossessionsModal = ({ show, handleClose, selectedPerson, selectedPerso
             </Card.Title>
 
             <Card.Text className="card-text-custom">
-                    <p>Patrimoine le : <DatePicker
+                    Patrimoine le : 
+            </Card.Text>
+            <DatePicker
                           selected={getPatrimoineDate}
                           onChange={(getPatrimoineDate) => setGetPatrimoineDate(getPatrimoineDate)}
                           dateFormat="dd/MM/yyyy"
                           className="form-control"
-                        /></p>
-                        <p> =  {sumPatrimoine}</p>
+                        />
+
+            <Card.Text className="card-text-custom">
+             =  {sumPatrimoine}
             </Card.Text>
+
               <Button variant="primary" className="btn-custom" onClick={() => {setSumPatrimoine(calculatePatrimoineValue(selectedPersonPossessions, getPatrimoineDate))}}>
                 Valider
               </Button>
