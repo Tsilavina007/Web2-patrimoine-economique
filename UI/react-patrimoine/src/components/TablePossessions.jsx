@@ -3,6 +3,7 @@ import { Modal, Button, Table, Card, Row, Col } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+
 import Argent from '../../../../models/possessions/Argent.js';
 import BienMateriel from '../../../../models/possessions/BienMateriel.js';
 import Flux from '../../../../models/possessions/Flux.js';
@@ -32,7 +33,7 @@ const calculateCurrentValue = (possession, calculateDate) => {
   // Appliquer l'ajustement selon le type de possession
   switch (possession.type) {
     case 'Argent':
-      if (possession.libelle === 'Epargne') {
+      if (possession.typeArgent === 'Epargne') {
         // Calculer les intérêts composés annuels
         const savingsAccount = new Argent(
           "Ilo", 
@@ -46,16 +47,16 @@ const calculateCurrentValue = (possession, calculateDate) => {
         currentValue = savingsAccount.getValeur(now);
 
 
-      } else if (possession.libelle === 'Courant') {
+      } else if (possession.typeArgent === 'Courant') {
         
         const salary = new Flux(
           "Ilo", 
           possession.libelle, 
-          possession.amount, 
+          possession.constAmount, 
           start, 
           null, 
           0, 
-          15);
+          possession.getAmountDate);
 
         currentValue = salary.getValeur(now);
       }
@@ -75,11 +76,20 @@ const calculateCurrentValue = (possession, calculateDate) => {
       break;
 
     case 'TrainDeVie':
-      currentValue = possession.amount;
+      const survie = new Flux(
+        "Ilo", 
+        possession.libelle, 
+        possession.constAmount, 
+        start, 
+        null, 
+        0, 
+        possession.getAmountDate);
+
+      currentValue = survie.getValeur(now);
       break;
 
     default:
-      currentValue = possession.amount;
+      currentValue = possession.constAmount;
       break;
   }
 
@@ -103,12 +113,8 @@ const calculatePatrimoineValue = (possessions, getPatrimoineDate) => {
   return patrimoineValue.toFixed(2);
 }
 
-const ShowPossessionsModal = ({ show, handleClose, selectedPerson, selectedPersonPossessions, getPatrimoineDate, setGetPatrimoineDate, sumPatrimoine, setSumPatrimoine }) => (
-  <Modal show={show} onHide={handleClose} dialogClassName="modal-full-width">
-    <Modal.Header closeButton>
-      <Modal.Title>Possessions de {selectedPerson}</Modal.Title>
-    </Modal.Header>
-    <Modal.Body className="modal-body-full-width">
+const ShowPossessionsModal = ({selectedPersonPossessions, getPatrimoineDate, setGetPatrimoineDate, sumPatrimoine, setSumPatrimoine }) => (
+    <>
       <Row className="mt-5">
         <Col className="d-flex justify-content-center">
           <Card className="modal-content-full-width">
@@ -128,7 +134,7 @@ const ShowPossessionsModal = ({ show, handleClose, selectedPerson, selectedPerso
                   {selectedPersonPossessions.map((possession, index) => (
                     <tr key={index}>
                       <td>{possession.libelle}</td>
-                      <td>{possession.amount}</td>
+                      <td>{possession.constAmount}</td>
                       <td>
                         <DatePicker
                           selected={new Date(possession.startDate)}
@@ -150,7 +156,7 @@ const ShowPossessionsModal = ({ show, handleClose, selectedPerson, selectedPerso
                         <td></td>
                       )}
                       <td>
-                        {possession.type === 'Argent' && possession.libelle === 'Epargne'
+                        {possession.type === 'Argent' && possession.typeArgent === 'Epargne'
                           ? `${possession.interestRate} %`
                           : possession.type === 'Materiel'
                           ? `${possession.depreciationRate} %`
@@ -197,8 +203,7 @@ const ShowPossessionsModal = ({ show, handleClose, selectedPerson, selectedPerso
           </Card>
         </Col>
       </Row>
-    </Modal.Body>
-  </Modal>
+    </>
 );
 
 export default ShowPossessionsModal;

@@ -12,42 +12,29 @@
       "possessions": [
         {
           "type": "Argent",
-          "libelle": "Especes",
-          "amount": 400000,
-          "startDate": "2024-08-07T17:16:32.477Z"
+          "typeArgent":"Courant",
+          "libelle": "Alternance",
+          "amount": 0,
+          "constAmount": 500000,
+          "startDate": "2022-12-31T21:00:00.000Z",
+          "getAmountdate": 1
         },
-        {
-          "type": "Argent",
-          "libelle": "Epargne",
-          "amount": 200000,
-          "startDate": "2024-08-07T17:16:32.477Z",
-          "interestRate": 10
-        },
-        {
-          "type": "Argent",
-          "libelle": "Courant",
-          "amount": 600000,
-          "startDate": "2024-06-07T17:16:32.477Z"
-        },
+
         {
           "type": "Materiel",
-          "libelle": "Ordinateur",
-          "amount": 2000000,
-          "startDate": "2021-10-26T17:16:32.000Z",
-          "depreciationRate": 10
-        },
-        {
-          "type": "Materiel",
-          "libelle": "vetement",
-          "amount": 1000000,
-          "startDate": "2021-01-01T17:16:32.000Z",
-          "depreciationRate": 20
+          "libelle": "MacBook Pro",
+          "amount": 4000000,
+          "constAmount": 4000000,
+          "startDate": "2023-12-25T00:00:00.000Z",
+          "depreciationRate": 5
         },
         {
           "type": "TrainDeVie",
-          "libelle": "Train De Vie",
-          "amount": 500000,
-          "startDate": "2024-08-07T17:16:32.000Z"
+          "libelle": "Survie",
+          "amount": 0,
+          "constAmount": 300000,
+          "startDate": "2022-12-31T21:00:00.000Z",
+          "getAmountdate": 2
         }
       ]
     }

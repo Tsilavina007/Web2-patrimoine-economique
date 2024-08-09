@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './components/Home.jsx';
-import ShowPossessionsModal from './components/ShowPossessionsModal.jsx';
-
+import TablePossessions from './components/TablePossessions.jsx';
 
 function App() {
   const [showPossessions, setShowPossessions] = useState(false);
@@ -26,6 +25,10 @@ function App() {
       const patrimoinesResponse = await fetch('http://localhost:5000/patrimoines');
       const patrimoinesData = await patrimoinesResponse.json();
       setPatrimoines(patrimoinesData);
+
+      handleShowPossessions(people[0])
+      
+
     };
 
     loadData();
@@ -37,23 +40,16 @@ function App() {
     const personPatrimoine = patrimoines.find(p => p.person === person.name);
     setSelectedPersonPossessions(personPatrimoine ? personPatrimoine.possessions : []);
     setSelectedPerson(person.name);
-    setShowPossessions(true);
   };
 
-  const handleClosePossessions = () => setShowPossessions(false);
-
-  
 
 
 
   return (
     <>
-    <Home handleShowPossessions={handleShowPossessions} person={people[0]} />
+    <Home person={people[0]} />
     <Container className="mt-5" style={{ width: '100vw' }}>
-      <ShowPossessionsModal
-        show={showPossessions}
-        handleClose={handleClosePossessions}
-        selectedPerson={selectedPerson}
+      <TablePossessions
         selectedPersonPossessions={selectedPersonPossessions}
         getPatrimoineDate={getPatrimoineDate}
         setGetPatrimoineDate={setGetPatrimoineDate}
@@ -61,6 +57,7 @@ function App() {
         setSumPatrimoine={setSumPatrimoine}
       />
     </Container>
+    
     </>
   );
 }
