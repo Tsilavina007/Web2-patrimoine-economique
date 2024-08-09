@@ -32,4 +32,19 @@ async function writeFile(path, data) {
   }
 }
 
-export { readFile, writeFile };
+async function getPeopleAndPatrimoines() {
+  const result = await readFile('dataBase.json');
+  
+  if (result.status === "OK") {
+    const peopleData = result.data.people;
+    const patrimoinesData = result.data.patrimoines;
+    
+    console.log(peopleData);
+    console.log(patrimoinesData);
+    return { "people": peopleData,
+            "patrimoines" : patrimoinesData };
+  } else {
+    console.error('Error reading file:', result.error);
+  }
+}
+export { readFile, writeFile, getPeopleAndPatrimoines };

@@ -1,5 +1,4 @@
 import 'react-datepicker/dist/react-datepicker.css';
-import { readFile, writeFile } from "./../../../data/index.js";
 import React, { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,21 +15,16 @@ function App() {
   const [getPatrimoineDate, setGetPatrimoineDate] = useState(new Date());
   const [sumPatrimoine, setSumPatrimoine] = useState(0);
   
-  const pathDataJson = "./../../../data/dataBase.json"
-
   useEffect(() => {
     // Fetch people and patrimoines from json-server
     const loadData = async () => {
       
-      // const peopleResponse = await fetch('http://localhost:5000/people');
-      // const peopleData = await peopleResponse.json();
-      const peopleData = readFile(pathDataJson);
-      // console.log(peopleData);
+      const peopleResponse = await fetch('http://localhost:5000/people');
+      const peopleData = await peopleResponse.json();
       setPeople(peopleData);
 
-      // const patrimoinesResponse = await fetch('http://localhost:5000/patrimoines');
-      // const patrimoinesData = await patrimoinesResponse.json();
-      const patrimoinesData = readFile(pathDataJson);
+      const patrimoinesResponse = await fetch('http://localhost:5000/patrimoines');
+      const patrimoinesData = await patrimoinesResponse.json();
       setPatrimoines(patrimoinesData);
     };
 
