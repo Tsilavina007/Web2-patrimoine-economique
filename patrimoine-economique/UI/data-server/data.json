@@ -1,0 +1,55 @@
+{
+  "people": [
+    {
+      "id": "e63b",
+      "name": "ilo"
+    }
+  ],
+  "patrimoines": [
+    {
+      "id": "49b7",
+      "person": "ilo",
+      "possessions": [
+        {
+          "type": "Argent",
+          "libelle": "Especes",
+          "amount": 400000,
+          "startDate": "2024-08-07T17:16:32.477Z"
+        },
+        {
+          "type": "Argent",
+          "libelle": "Epargne",
+          "amount": 200000,
+          "startDate": "2024-08-07T17:16:32.477Z",
+          "interestRate": 10
+        },
+        {
+          "type": "Argent",
+          "libelle": "Courant",
+          "amount": 600000,
+          "startDate": "2024-06-07T17:16:32.477Z"
+        },
+        {
+          "type": "Materiel",
+          "libelle": "Ordinateur",
+          "amount": 2000000,
+          "startDate": "2021-10-26T17:16:32.000Z",
+          "depreciationRate": 10
+        },
+        {
+          "type": "Materiel",
+          "libelle": "vetement",
+          "amount": 1000000,
+          "startDate": "2021-01-01T17:16:32.000Z",
+          "depreciationRate": 20
+        },
+        {
+          "type": "TrainDeVie",
+          "libelle": "Train De Vie",
+          "amount": 500000,
+          "startDate": "2024-08-07T17:16:32.000Z"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+
+
+/* App.css */
+.modal-full-width {
+  max-width: 100vw;
+}
+
+.modal-body-full-width {
+  width: 100vw;
+  padding: 0;
+}
+
+.modal-content-full-width {
+  width: 100vw;
+}
