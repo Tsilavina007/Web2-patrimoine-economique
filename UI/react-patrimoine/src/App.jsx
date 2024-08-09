@@ -25,7 +25,7 @@ function App() {
       // const peopleResponse = await fetch('http://localhost:5000/people');
       // const peopleData = await peopleResponse.json();
       const peopleData = readFile(pathDataJson);
-      console.log(peopleData);
+      // console.log(peopleData);
       setPeople(peopleData);
 
       // const patrimoinesResponse = await fetch('http://localhost:5000/patrimoines');
