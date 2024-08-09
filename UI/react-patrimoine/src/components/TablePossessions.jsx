@@ -71,7 +71,12 @@ const calculateCurrentValue = (possession, calculateDate) => {
         start, 
         null, 
         possession.depreciationRate);
+
         currentValue = materiel.getValeur(now);
+
+        if (currentValue <= 0) {
+            currentValue = 0
+        }
 
       break;
 
@@ -113,7 +118,7 @@ const calculatePatrimoineValue = (possessions, getPatrimoineDate) => {
   return patrimoineValue.toFixed(2);
 }
 
-const ShowPossessionsModal = ({selectedPersonPossessions, getPatrimoineDate, setGetPatrimoineDate, sumPatrimoine, setSumPatrimoine }) => (
+const ShowPossessionsModal = ({selectedPersonPossessions, getPatrimoineDate, setGetPatrimoineDate, sumPatrimoine, setSumPatrimoine, endDate, setEndDate }) => (
     <>
       <Row className="mt-5">
         <Col className="d-flex justify-content-center">
@@ -143,18 +148,14 @@ const ShowPossessionsModal = ({selectedPersonPossessions, getPatrimoineDate, set
                           disabled
                         />
                       </td>
-                      {possession.type === "Materiel" ? (
                         <td>
                           <DatePicker
-                            selected={new Date(getDateFin(possession.startDate, possession.depreciationRate))}
+                            selected={new Date(endDate)}
                             dateFormat="dd/MM/yyyy"
                             className="form-control"
                             disabled
                           />
                         </td>
-                      ) : (
-                        <td></td>
-                      )}
                       <td>
                         {possession.type === 'Argent' && possession.typeArgent === 'Epargne'
                           ? `${possession.interestRate} %`
@@ -163,7 +164,7 @@ const ShowPossessionsModal = ({selectedPersonPossessions, getPatrimoineDate, set
                           : ''}
                       </td>
                       <td>
-                        {calculateCurrentValue(possession, new Date())}
+                        {calculateCurrentValue(possession, new Date(endDate))}
                       </td>
                     </tr>
                   ))}
@@ -174,17 +175,13 @@ const ShowPossessionsModal = ({selectedPersonPossessions, getPatrimoineDate, set
         </Col>
       </Row>
 
-      <Row className="justify-content-start m-4" style={{width:'100%'}}>
+      <Row className="justify-content-start mt-4 mb-4" style={{width:'100%'}}>
         <Col md={8} className="text-start">
           <Card className="card-custom">
             <Card.Body>
             <Card.Title className="card-text-custom">
                   Calcul Patrimoine
             </Card.Title>
-
-            <Card.Text className="card-text-custom">
-                    Patrimoine le : 
-            </Card.Text>
             <DatePicker
                           selected={getPatrimoineDate}
                           onChange={(getPatrimoineDate) => setGetPatrimoineDate(getPatrimoineDate)}
@@ -193,10 +190,10 @@ const ShowPossessionsModal = ({selectedPersonPossessions, getPatrimoineDate, set
                         />
 
             <Card.Text className="card-text-custom">
-             =  {sumPatrimoine}
+             Total =  {sumPatrimoine}
             </Card.Text>
 
-              <Button variant="primary" className="btn-custom" onClick={() => {setSumPatrimoine(calculatePatrimoineValue(selectedPersonPossessions, getPatrimoineDate))}}>
+              <Button variant="primary" className="btn-custom" onClick={() => {setSumPatrimoine(calculatePatrimoineValue(selectedPersonPossessions, getPatrimoineDate)); setEndDate(getPatrimoineDate)}}>
                 Valider
               </Button>
             </Card.Body>

@@ -10,6 +10,16 @@
       "id": "49b7",
       "person": "ilo",
       "possessions": [
+
+        {
+          "type": "Materiel",
+          "libelle": "MacBook Pro",
+          "amount": 4000000,
+          "constAmount": 4000000,
+          "startDate": "2023-12-25T00:00:00.000Z",
+          "depreciationRate": 5
+        },
+
         {
           "type": "Argent",
           "typeArgent":"Courant",
@@ -20,14 +30,6 @@
           "getAmountdate": 1
         },
 
-        {
-          "type": "Materiel",
-          "libelle": "MacBook Pro",
-          "amount": 4000000,
-          "constAmount": 4000000,
-          "startDate": "2023-12-25T00:00:00.000Z",
-          "depreciationRate": 5
-        },
         {
           "type": "TrainDeVie",
           "libelle": "Survie",

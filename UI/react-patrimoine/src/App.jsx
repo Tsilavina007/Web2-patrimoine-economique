@@ -7,7 +7,7 @@ import TablePossessions from './components/TablePossessions.jsx';
 
 function App() {
   const [showPossessions, setShowPossessions] = useState(false);
-  const [selectedPerson, setSelectedPerson] = useState(null);
+  const [endDate, setEndDate] = useState(new Date());
   const [people, setPeople] = useState([]);
   const [patrimoines, setPatrimoines] = useState([]);
   const [selectedPersonPossessions, setSelectedPersonPossessions] = useState([]);
@@ -26,9 +26,7 @@ function App() {
       const patrimoinesData = await patrimoinesResponse.json();
       setPatrimoines(patrimoinesData);
 
-      handleShowPossessions(people[0])
-      
-
+      handleShowPossessions(people[0]);
     };
 
     loadData();
@@ -47,7 +45,7 @@ function App() {
 
   return (
     <>
-    <Home person={people[0]} />
+    <Home />
     <Container className="mt-5" style={{ width: '100vw' }}>
       <TablePossessions
         selectedPersonPossessions={selectedPersonPossessions}
@@ -55,6 +53,8 @@ function App() {
         setGetPatrimoineDate={setGetPatrimoineDate}
         sumPatrimoine={sumPatrimoine}
         setSumPatrimoine={setSumPatrimoine}
+        endDate={endDate}
+        setEndDate={setEndDate}
       />
     </Container>
     
