@@ -4,12 +4,12 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 
-import Argent from '../../../../models/possessions/Argent.js';
-import BienMateriel from '../../../../models/possessions/BienMateriel.js';
-import Flux from '../../../../models/possessions/Flux.js';
-import Possession from '../../../../models/possessions/Possession.js';
-import Patrimoine from '../../../../models/Patrimoine.js';
-import Personne from '../../../../models/Personne.js';
+import Argent from '../../../models/possessions/Argent.js';
+import BienMateriel from '../../../models/possessions/BienMateriel.js';
+import Flux from '../../../models/possessions/Flux.js';
+import Possession from '../../../models/possessions/Possession.js';
+import Patrimoine from '../../../models/Patrimoine.js';
+import Personne from '../../../models/Personne.js';
 
 
 const getDateFin = (dateDebut, amortissement) => {
