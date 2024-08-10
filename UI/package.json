@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "json-server": "json-server --watch ../../data-server/data.json --port 5000",
+    "json-server": "json-server --watch ../../data/data.json --port 5000",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
