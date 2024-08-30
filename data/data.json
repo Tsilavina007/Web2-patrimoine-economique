@@ -1,44 +1,50 @@
 {
   "people": [
     {
-      "id": "e63b",
-      "name": "ilo"
+      "name": "ilo",
+      "id": "1724963856943"
+    },
+    {
+      "name": "Tsong",
+      "id": "1724964485133"
     }
   ],
   "patrimoines": [
     {
-      "id": "49b7",
       "person": "ilo",
       "possessions": [
-
+        {
+          "type": "Argent",
+          "typeArgent": "Courant",
+          "libelle": "Alternance",
+          "amount": 500000,
+          "startDate": "2022-12-31T06:00:00.000Z",
+          "endDate": "2024-08-30T08:40:21.415Z",
+          "getAmountDate": 1
+        },
         {
           "type": "Materiel",
           "libelle": "MacBook Pro",
           "amount": 4000000,
-          "constAmount": 4000000,
           "startDate": "2023-12-25T00:00:00.000Z",
+          "endDate": "2023-12-25T00:00:00.000Z",
           "depreciationRate": 5
         },
-
-        {
-          "type": "Argent",
-          "typeArgent":"Courant",
-          "libelle": "Alternance",
-          "amount": 0,
-          "constAmount": 500000,
-          "startDate": "2022-12-31T21:00:00.000Z",
-          "getAmountdate": 1
-        },
-
         {
           "type": "TrainDeVie",
           "libelle": "Survie",
-          "amount": 0,
-          "constAmount": 300000,
+          "amount": 300000,
           "startDate": "2022-12-31T21:00:00.000Z",
-          "getAmountdate": 2
+          "endDate": "2022-12-31T21:00:00.000Z",
+          "getAmountDate": 2
         }
-      ]
+      ],
+      "id": "1724963856969"
+    },
+    {
+      "person": "Tsong",
+      "possessions": [],
+      "id": "1724964486101"
     }
   ]
 }

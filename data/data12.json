@@ -1,0 +1,43 @@
+{
+  "people": [
+    {
+      "id": "e63b",
+      "name": "ilo"
+    }
+  ],
+  "patrimoines": [
+    {
+      "id": "e63b",
+      "person": "ilo",
+      "possessions": [
+        {
+          "type": "Materiel",
+          "libelle": "MacBook Pro",
+          "amount": 4000000,
+          "constAmount": 4000000,
+          "startDate": "2023-12-25T00:00:00.000Z",
+          "depreciationRate": 5,
+          "dateFin": ""
+        },
+        {
+          "type": "Argent",
+          "typeArgent": "Courant",
+          "libelle": "Alternance",
+          "amount": 0,
+          "constAmount": 500000,
+          "startDate": "2022-12-31T21:00:00.000Z",
+          "getAmountdate": 1
+        },
+        {
+          "type": "TrainDeVie",
+          "libelle": "Survie",
+          "amount": 0,
+          "constAmount": 300000,
+          "startDate": "2022-12-31T21:00:00.000Z",
+          "getAmountdate": 2,
+          "dateFin": ""
+        }
+      ]
+    }
+  ]
+}
