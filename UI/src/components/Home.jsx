@@ -1,18 +1,25 @@
 // src/components/Home.js
 import React from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
-import './Home.css';
+import { Container, Row, Col, Button, Card } from 'react-bootstrap';
+import './Home.css'; // Assurez-vous d'importer le fichier CSS
 
-const Home = () => {
+const Home = ({ handleShowAddPerson }) => {
   return (
-    <Container className="mt-5">
+    <Container className="mt-5 w-100 pt-5">
       <Row className="justify-content-center mb-4">
         <Col md={8} className="text-center">
           <Card className="card-custom">
             <Card.Body>
-              <Card.Title as="h1" className="card-title-custom">
-                Patrimoine
+              <Card.Title as="h2" className="card-title-custom">
+                Bienvenue dans le Gestionnaire de Patrimoine Économique
               </Card.Title>
+              <Card.Text className="card-text-custom">
+                Cette application permet de décrire et de projeter le patrimoine économique d'un étudiant de HEI. 
+                L'objectif est de maximiser les trois principales possessions : l'argent, les biens matériels et le train de vie.
+              </Card.Text>
+              <Button variant="primary" className="btn-custom" onClick={handleShowAddPerson}>
+                Ajouter une Personne
+              </Button>
             </Card.Body>
           </Card>
         </Col>

@@ -10,10 +10,11 @@
   }
   
   .card-text-custom {
-    color: #6c757d; /* Couleur personnalisée pour le texte */
+    color: #717a83; /* Couleur personnalisée pour le texte */
   }
   
   .btn-custom {
+    color: #dee2e6;
     background-color: #007bff; /* Couleur de fond personnalisée pour le bouton */
     border-color: #007bff; /* Couleur de bordure personnalisée pour le bouton */
   }
@@ -22,4 +23,3 @@
     background-color: #0056b3; /* Couleur de fond au survol pour le bouton */
     border-color: #004085; /* Couleur de bordure au survol pour le bouton */
   }
-  

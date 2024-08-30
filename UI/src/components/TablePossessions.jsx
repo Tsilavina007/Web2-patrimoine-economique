@@ -1,7 +1,8 @@
 import React from 'react';
-import { Modal, Button, Table, Card, Row, Col } from 'react-bootstrap';
+import {Button, Table, Card, Row, Col } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useNavigate } from 'react-router-dom';
 
 
 import Argent from '../../../models/possessions/Argent.js';
@@ -118,11 +119,50 @@ const calculatePatrimoineValue = (possessions, getPatrimoineDate) => {
   return patrimoineValue.toFixed(2);
 }
 
-const ShowPossessionsModal = ({selectedPersonPossessions, getPatrimoineDate, setGetPatrimoineDate, sumPatrimoine, setSumPatrimoine, endDate, setEndDate }) => (
-    <>
-      <Row className="mt-5">
+
+
+const ShowPossessionsModal = ({ people, patrimoines, handleShowAddPossession}) => {
+
+  const [sumPatrimoine, setSumPatrimoine] = useState(0);
+  const [getPatrimoineDate, setGetPatrimoineDate] = useState(new Date());
+
+  const navigate = useNavigate();
+
+  const handleEdit = (libelle) => {
+    navigate(`/possession/${libelle}/update`);
+  };
+
+  const { personName } = useParams(); // Extraire le nom de la personne depuis l'URL
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedPersonPossessions, setSelectedPersonPossessions] = useState([]);
+  const [selectedPerson, setSelectedPerson] = useState([]);
+
+  useEffect(() => {
+    const person = people.find(p => p.name === personName);
+    if (person) {
+        setSelectedPerson(person)
+      const patrimoine = patrimoines.find(p => p.person === person.name);
+      if (patrimoine) {
+        setSelectedPersonPossessions(patrimoine.possessions);
+      }
+    }
+  }, [personName, people, patrimoines]);
+
+  
+  return (<>
+   <div className=" mt-2 p-3">
+      <h2>Possessions de {personName}</h2>
+      <Button
+      className='mb-3'
+            variant="secondary"
+            onClick={() => handleShowAddPossession(selectedPerson)}
+        >
+            Ajouter Possession
+        </Button>
+
+      <Row>
         <Col className="d-flex justify-content-center">
-          <Card className="modal-content-full-width">
+          <Card className="w-100">
             <Card.Body>
               <Table striped bordered hover>
                 <thead>
@@ -133,6 +173,7 @@ const ShowPossessionsModal = ({selectedPersonPossessions, getPatrimoineDate, set
                     <th>Date fin</th>
                     <th>Intérêt / Amortissement</th>
                     <th>Valeur actuelle</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -166,6 +207,10 @@ const ShowPossessionsModal = ({selectedPersonPossessions, getPatrimoineDate, set
                       <td>
                         {calculateCurrentValue(possession, new Date(endDate))}
                       </td>
+                      <td>
+                      <Button variant="warning" onClick={() => {}}>Éditer</Button>
+                      <Button variant="danger" onClick={() => {}}>Clôturer</Button>
+                    </td>
                     </tr>
                   ))}
                 </tbody>
@@ -175,7 +220,7 @@ const ShowPossessionsModal = ({selectedPersonPossessions, getPatrimoineDate, set
         </Col>
       </Row>
 
-      <Row className="justify-content-start mt-4 mb-4" style={{width:'100%'}}>
+      <Row className="justify-content-start mt-4 mb-4" style={{width:'50%'}}>
         <Col md={8} className="text-start">
           <Card className="card-custom">
             <Card.Body>
@@ -200,7 +245,8 @@ const ShowPossessionsModal = ({selectedPersonPossessions, getPatrimoineDate, set
           </Card>
         </Col>
       </Row>
+    </div>
     </>
-);
+)};
 
 export default ShowPossessionsModal;

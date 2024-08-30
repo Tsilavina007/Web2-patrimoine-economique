@@ -72,19 +72,6 @@ button:focus-visible {
 }
 
 
-/* App.css */
-.modal-full-width {
-  max-width: 100vw;
-}
-
-.modal-body-full-width {
-  width: 100vw;
-  padding: 0;
-}
-
-.modal-content-full-width {
-  width: 95vw;
-}
 
 
 
