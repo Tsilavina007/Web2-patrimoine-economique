@@ -4,6 +4,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useParams, useNavigate } from 'react-router-dom';
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const UpdatePossessionPage = ({people, patrimoines}) => {
 //   const { personName } = useParams();
   const { libelleValue } = useParams();
