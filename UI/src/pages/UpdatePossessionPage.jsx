@@ -14,6 +14,7 @@ const UpdatePossessionPage = ({people, patrimoines}) => {
   const [selectedPersonPossessions, setSelectedPersonPossessions] = useState([]);
   const [possession, setPossession] = useState('');
 
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const navigate = useNavigate();
 
@@ -82,7 +83,7 @@ const UpdatePossessionPage = ({people, patrimoines}) => {
   
     try {
 
-      await fetch(`http://localhost:5000/possession/${libelleValue}`, {
+      await fetch(`${apiUrl}/possession/${libelleValue}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ updateLibelle: newPossession.libelle, updateDateFin:newPossession.endDate}),
