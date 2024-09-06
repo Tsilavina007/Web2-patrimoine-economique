@@ -27,7 +27,7 @@ const ShowPossessionsPage = ({handleShowAddPossession}) => {
   const [sumPatrimoine, setSumPatrimoine] = useState(0);
   const [getPatrimoineDate, setGetPatrimoineDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const  personName = "ilo"; // Extraire le nom de la personne depuis l'URL
+  const [personName, setPersonName] = useState("");
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedPersonPossessions, setSelectedPersonPossessions] = useState([]);
@@ -63,7 +63,7 @@ const ShowPossessionsPage = ({handleShowAddPossession}) => {
       const peopleResponse = await fetch(`${apiUrl}/people`);
       const peopleData = await peopleResponse.json();
       setSelectedPerson(peopleData);
-  
+      setPersonName(peopleData.name)
       const patrimoinesResponse = await fetch(`${apiUrl}/possession`);
       const patrimoinesData = await patrimoinesResponse.json();
       setSelectedPersonPossessions(patrimoinesData);
