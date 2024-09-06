@@ -41,7 +41,11 @@ export default class Flux extends Possession {
 
     // calcul montant total
 
-    this.valeur += nombreDeMois(this.dateDebut, date, this.jour) * this.valeurConstante;
+    if (this.dateDebut > date) {
+      this.valeur = 0
+    } else{
+      this.valeur += nombreDeMois(this.dateDebut, date, this.jour) * this.valeurConstante;
+    }
 
     return this.valeur;
   }

@@ -4,7 +4,8 @@ import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import calculatePatrimoineValue from '../models/calculatePatrimoineValue.js';
+// import calculatePatrimoineValue from '../models/calculatePatrimoineValue.js';
+import calculatePatrimoineValue from '../UI/src/models/calculatePatrimoineValue.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -14,100 +15,107 @@ const port = 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
-const dataFilePath = path.join(__dirname, '../data/data.json');
+
+const dataFilePath = path.join(__dirname, '../data/data2.json');
 let data = JSON.parse(fs.readFileSync(dataFilePath, 'utf-8'));
+let peopleData = data[0].data;
+let patrimoinesData = data[1].data;
+
 
 app.get('/people', (req, res) => {
-  res.json(data.people);
+  res.json(peopleData);
 });
 
-app.post('/people', (req, res) => {
-  const newPerson = req.body;
-  newPerson.id = Date.now().toString();
-  data.people.push(newPerson);
-  fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
-  res.json(newPerson);
-});
-
-app.delete('/people/:id', (req, res) => {
-  data.people = data.people.filter(p => p.id !== req.params.id);
-  data.patrimoines = data.patrimoines.filter(p => p.person !== req.params.id);
-  fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
-  res.sendStatus(204);
-});
 
 app.get('/patrimoines', (req, res) => {
-  res.json(data.patrimoines);
+  res.json(patrimoinesData);
 });
 
 
-app.post('/patrimoines', (req, res) => {
-  const newPatrimoine = req.body;
-  newPatrimoine.id = Date.now().toString();
-  data.patrimoines.push(newPatrimoine);
+app.get('/possession', (req, res) => {
+  res.json(patrimoinesData.possessions);
+});
+
+
+app.post('/possession', (req, res) => {
+  const newPossession = req.body;
+  newPossession.possession["owner"] = patrimoinesData.owner
+  data[1].data.possessions.push(newPossession.possession);
   fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
-  res.json(newPatrimoine);
+  res.json(newPossession.possession);
 });
 
-// Endpoint pour obtenir les possessions d'une personne spécifique
-app.get('/possessions/:person', (req, res) => {
-    const personName = req.params.person;
-    // Trouver le patrimoine de la personne spécifiée
-    const patrimoine = data.patrimoines.find(patrimoine => patrimoine.person === personName);
-    if (!patrimoine) {
-      return res.status(404).json({ error: 'Person not found ' + personName  });
+
+app.get('/possession/:libelle', (req, res) => {
+    const libelle = req.params.libelle;
+    const possession = patrimoinesData.possessions.find(poss => poss.libelle === libelle);
+    if (!possession) {
+      return res.status(404).json({ error: 'Possession not found ' + libelle  });
     }
-    // Retourner les possessions de la personne
-    res.json(patrimoine);
-  });
+    res.json(possession);
+});
 
 
 
-  app.patch('/patrimoine/:id', (req, res) => {
-    const patrimoineId = req.params.id;
+app.patch('/possession/:libelle', (req, res) => {
+    const libelle = req.params.libelle;
+    // const {updateLibelle, updateDateFin} = req.body;
     const updatedData = req.body;
-  
-    // Trouver le patrimoine à mettre à jour
-    const patrimoineIndex = data.patrimoines.findIndex(patrimoine => patrimoine.id === patrimoineId);
-  
-    if (patrimoineIndex === -1) {
-      return res.status(404).json({ error: 'Patrimoine not found' });
+    let updatePossession = patrimoinesData.possessions.find(poss => poss.libelle === libelle);
+    if (!updatePossession) {
+      return res.status(404).json({ error: 'Possession not found ' + libelle  });
+    } else {
+      data[1].data.possessions.map(poss => {
+        if (poss.libelle === libelle) {
+          poss.libelle = updatedData.updateLibelle;
+          poss.endDate = updatedData.updateDateFin;
+        }
+      });
+      updatePossession.libelle = updatedData.updateLibelle;
+      updatePossession.endDate = updatedData.updateDateFin;
     }
-  
-    // Mettre à jour les possessions
-    data.patrimoines[patrimoineIndex].possessions = updatedData.possessions;
-  
-    // Sauvegarder les données mises à jour dans le fichier
     fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
-  
-    // Répondre avec les données mises à jour
-    res.json(data.patrimoines[patrimoineIndex]);
-  });
+    res.json(updatePossession);
+});
 
 
+app.patch('/possession/:libelle/close', (req, res) => {
+    const libelle = req.params.libelle;
+    let updatePossession = patrimoinesData.possessions.find(poss => poss.libelle === libelle);
+    if (!updatePossession) {
+      return res.status(404).json({ error: 'Possession not found ' + libelle  });
+    } else {
+      data[1].data.possessions.map(poss => {poss.libelle === libelle?poss.endDate = new Date():poss});
+      updatePossession.endDate = new Date();
+    }
+    fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
+    res.json(updatePossession);
+});
 
-app.delete('/patrimoines/:id', (req, res) => {
-  data.patrimoines = data.patrimoines.filter(p => p.id !== req.params.id);
-  fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
-  res.sendStatus(204);
+
+app.get('/patrimoines/:date', (req, res) => {
+  const date = new Date(req.params.date);
+  let value = calculatePatrimoineValue(patrimoinesData.possessions, date);
+  res.json(value);
+  // res.json(date)  
 });
 
 
 // Endpoint pour obtenir la valeur du patrimoine par mois sur une période donnée
 app.get('/patrimoine/range', (req, res) => {
-  const { id, dateDebut, dateFin } = req.query;
+  const { dateDebut, dateFin, day } = req.query;
   
   // Convertir les dates en objets Date
   const startDate = new Date(dateDebut);
   const endDate = new Date(dateFin);
 
-  const patrimoineIndex = data.patrimoines.findIndex(patrimoine => patrimoine.id === id);
-  if (patrimoineIndex === -1) {
-    return res.status(404).json({ error: 'Patrimoine not found' });
+  if (startDate.getDate() > day) {
+    startDate.setMonth(startDate.getMonth() + 1);
   }
 
-  // Récupérer les possessions
-  const patrimoine = data.patrimoines[patrimoineIndex]; // On suppose qu'il y a un seul patrimoine pour simplifier
+  startDate.setDate(day);
+
+  const patrimoine = patrimoinesData; 
   
   // Préparer un objet pour stocker la valeur du patrimoine par mois
   const monthlyValues = {};
@@ -116,36 +124,23 @@ app.get('/patrimoine/range', (req, res) => {
 
     let possessionStartDate = new Date(startDate);
     let possessionEndDate =new Date(endDate);
-    if (possessionEndDate.getFullYear() > startDate.getFullYear()) {
-      possessionEndDate.setMonth(possessionEndDate.getMonth() +1)
-    }
-    // Si la possession commence après la date de fin ou se termine avant la date de début, l'ignorer
-    // if (possessionStartDate > endDate || possessionEndDate < startDate) return;
+    // if (possessionEndDate.getFullYear() > startDate.getFullYear()) {
+    //   possessionEndDate.setMonth(possessionEndDate.getMonth() +1)
+    // }
 
     // Boucler à travers chaque mois entre la date de début et la date de fin
     let currentDate = new Date(startDate);
 
-
-
     while (currentDate < possessionEndDate) { 
-      let monthKey = ``;
+      let monthKey = `${currentDate.getDate()}-${currentDate.getMonth()+1}-${currentDate.getFullYear()}`;
       // monthKey = `${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`;
 
-      if (currentDate.getMonth() >= 2 && startDate.getFullYear() < currentDate.getFullYear() ) {
-        monthKey = `${currentDate.getMonth() }-${currentDate.getFullYear()}`;
-      } else {
-        monthKey = `${currentDate.getMonth()+1}-${currentDate.getFullYear()}`;
-      }
-
+      
       if (!monthlyValues[monthKey]) {
         monthlyValues[monthKey] = 0;
       }
-
-      
-      // Calculer la valeur de la possession à cette date
+      // Calculer la valeur de la patrimoine à cette date
       let value = calculatePatrimoineValue(patrimoine.possessions, currentDate);
-
-
 
       monthlyValues[monthKey] += value;
 
@@ -153,13 +148,11 @@ app.get('/patrimoine/range', (req, res) => {
       currentDate.setMonth(currentDate.getMonth() + 1);
     }
 
-
-
-
   // Formater les données pour le retour
   const result = Object.keys(monthlyValues).map(key => {
-    const [month, year] = key.split('-');
+    const [getDay, month, year] = key.split('-');
     return {
+      getDay,
       month,
       year,
       valeur: Math.round(monthlyValues[key]) // Arrondir les valeurs

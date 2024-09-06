@@ -48,8 +48,6 @@ const calculateCurrentValue = (possession, calculateDate) => {
             0, 
             possession.getAmountDate);
   
-
-  
           currentValue = salary.getValeur(now);
         }
         break;

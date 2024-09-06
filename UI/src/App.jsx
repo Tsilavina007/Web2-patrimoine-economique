@@ -6,15 +6,13 @@ import { Modal, Button, Form, Container, Row, Col, Card, Table, Navbar, Nav } fr
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 
-import Home from './components/Home.jsx';
-import ConfirmationModal from './components/ConfiramtionModal.jsx';
-import AddPersonModal from './components/AddPersonModal.jsx';
-import AddPossessionModal from './components/AddPossessionModal.jsx';
-import ShowPossessionsModal from './components/ShowPossessionsModal.jsx';
-import ShowPossessionsPage from './components/ShowPossessionsPage.jsx';
-import PatrimoinesTable from './components/PatrimoinesTable.jsx';
-import UpdatePossessionPage from './components/UpdatePossessionPage.jsx';
-import LineChart from './components/LineCharts.jsx';
+import AddPossessionModal from './components/modals/AddPossessionModal.jsx';
+import ShowPossessionsPage from './pages/ShowPossessionsPage.jsx';
+import UpdatePossessionPage from './pages/UpdatePossessionPage.jsx';
+import LineChart from './components/charts/LineCharts.jsx';
+import NavbarComponent from './components/layout/PatrimoineNavbar.jsx';
+
+const apiUrl = import.meta.env.VITE_API_URL;
 
 
 function App() {
@@ -31,55 +29,31 @@ function App() {
   const [libelle, setLibelle] = useState('');
   const [amount, setAmount] = useState(0);
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(null);
   const [interestRate, setInterestRate] = useState(0);
   const [depreciationRate, setDepreciationRate] = useState(0);
   const [getAmountDate, setGetAmountDate] = useState(0);
   const [expenseAmount, setExpenseAmount] = useState(0);
   const [selectedPersonPossessions, setSelectedPersonPossessions] = useState([]);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-  
 
   useEffect(() => {
     // Fetch people and patrimoines from json-server
     const loadData = async () => {
-      const peopleResponse = await fetch('http://localhost:5000/people');
+      const peopleResponse = await fetch(`${apiUrl}/people`);
       const peopleData = await peopleResponse.json();
       setPeople(peopleData);
   
-      const patrimoinesResponse = await fetch('http://localhost:5000/patrimoines');
+      const patrimoinesResponse = await fetch(`${apiUrl}/patrimoines`);
       const patrimoinesData = await patrimoinesResponse.json();
       setPatrimoines(patrimoinesData);
+      
     };
   
     loadData();
   }, [people, patrimoines]); // tableau de dépendances vide pour exécuter l'effet uniquement lors du premier rendu
   
 
-
-
-
-  const handleAddPerson = async () => {
-    const newPerson = { name: newPersonName };
-    const response = await fetch('http://localhost:5000/people', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newPerson),
-    });
-    const personData = await response.json();
-    setPeople([...people, personData]);
-
-    // Add new patrimoine for the person
-    const newPatrimoine = { person: newPersonName, possessions: [] };
-    await fetch('http://localhost:5000/patrimoines', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newPatrimoine),
-    });
-
-    setShowAddPerson(false);
-    setNewPersonName('');
-  };
 
   const handleAddPossession = async () => {
     let newPossession = { type, typeArgent, libelle, amount, startDate, endDate, interestRate, depreciationRate, getAmountDate };
@@ -104,24 +78,12 @@ function App() {
     }
   
     try {
-      const response = await fetch(`http://localhost:5000/possessions/${selectedPerson}`);
-      const personPatrimoine = await response.json();
-      if (!personPatrimoine || !personPatrimoine.possessions) {
-        throw new Error('Invalid data structure');
-      }
-  
-      const updatedPossessions = [...personPatrimoine.possessions, newPossession];
-  
-      await fetch(`http://localhost:5000/patrimoine/${personPatrimoine.id}`, {
-        method: 'PATCH',
+
+      await fetch(`${apiUrl}/possession`, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ possessions: updatedPossessions }),
+        body: JSON.stringify({ possession: newPossession }),
       });
-  
-      setPatrimoines(patrimoines.map(patrimoine => patrimoine.person === selectedPerson
-        ? { ...patrimoine, possessions: updatedPossessions }
-        : patrimoine
-      ));
   
       setShowAddPossession(false);
       setLibelle('');
@@ -138,103 +100,35 @@ function App() {
   };
   
 
-  
-  
-
- const handleDeletePerson = async (person) => {
-    // Trouver le patrimoine associé à la personne
-    const patrimoineResponse = await fetch(`http://localhost:5000/patrimoines?person=${person.name}`);
-    const [personPatrimoine] = await patrimoineResponse.json();
-    
-    // Supprimer les possessions
-    if (personPatrimoine) {
-      await fetch(`http://localhost:5000/patrimoines/${personPatrimoine.id}`, { method: 'DELETE' });
-    }
-
-    // Supprimer la personne
-    await fetch(`http://localhost:5000/people/${person.id}`, { method: 'DELETE' });
-
-    // Mettre à jour l'état
-    setPeople(people.filter(p => p.id !== person.id));
-    setPatrimoines(patrimoines.filter(p => p.person !== person.name));
-    setShowConfirmDelete(false);
-  };
-
-  const handleShowAddPerson = () => setShowAddPerson(true);
-  const handleCloseAddPerson = () => setShowAddPerson(false);
   const handleShowAddPossession = (person) => {
     setSelectedPerson(person.name);
     setShowAddPossession(true);
   };
   const handleCloseAddPossession = () => setShowAddPossession(false);
 
-  const handleShowPossessions = (person) => {
-    const personPatrimoine = patrimoines.find(p => p.person === person.name);
-    setSelectedPersonPossessions(personPatrimoine ? personPatrimoine.possessions : []);
-    setSelectedPerson(person.name);
-    setShowPossessions(true);
-  };
-
-  const handleClosePossessions = () => setShowPossessions(false);
-
-  
-  const handleCloseConfirmDelete = () => setShowConfirmDelete(false);
-  const handleShowConfirmDelete = (person) => {
-    setSelectedPersonToDelete(person);
-    setShowConfirmDelete(true);
-  };
-
-
 
   return (
     <>
     <Router>
-    <Navbar bg="dark" variant="dark" expand="lg" className='p-3 position-fixed w-100 z-1'>
-        <Navbar.Brand as={Link} to="/">Patrimoines</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link as={Link} to="/possessions">Possessions</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+    <NavbarComponent/>
       <Routes>
         <Route path="/" element={
-            <Home handleShowAddPerson={handleShowAddPerson} />
-          }/>
-        <Route path="/possessions" element={
-            <PatrimoinesTable
+          <>
+            <LineChart
               people={people}
               patrimoines={patrimoines}
-              handleShowAddPossession={handleShowAddPossession}
-              handleShowPossessions={handleShowPossessions}
-              handleShowConfirmDelete={handleShowConfirmDelete}
             />
-            
+          </>
           }/>
-        <Route path="/possessions/:personName" element={<><ShowPossessionsPage 
-                                                        handleShowAddPossession={handleShowAddPossession} 
-                                                        people={people}
-                                                        patrimoines={patrimoines}
-                                                        setPatrimoines={setPatrimoines}/>
-                                                        
-                                                        </>} />
-        <Route path="/possession/:personName/update/:libelleValue" element={<UpdatePossessionPage 
+        <Route path="/possessions" element={
+            <ShowPossessionsPage 
+            handleShowAddPossession={handleShowAddPossession}/>}/>
+        <Route path="/possession/update/:libelleValue" element={<UpdatePossessionPage 
                                                                     people={people}
                                                                     patrimoines={patrimoines}
                                                                     setPatrimoines={setPatrimoines}
-                                                                    setPeople={setPeople}/>}  />
+                                              setPeople={setPeople}/>}  />
       </Routes>
-
-      {showAddPerson && (
-        <AddPersonModal
-          show={showAddPerson}
-          handleClose={handleCloseAddPerson}
-          newPersonName={newPersonName}
-          setNewPersonName={setNewPersonName}
-          handleAddPerson={handleAddPerson}
-        />
-      )}
       {showAddPossession && (
         <AddPossessionModal
           show={showAddPossession}
@@ -258,14 +152,7 @@ function App() {
           handleAddPossession={handleAddPossession}
         />
       )}
-      {showConfirmDelete && (
-        <ConfirmationModal
-          show={showConfirmDelete}
-          handleClose={handleCloseConfirmDelete}
-          selectedPerson={selectedPersonToDelete}
-          handleDelete={handleDeletePerson}
-        />
-      )}
+
       
     </Router>
     </>
