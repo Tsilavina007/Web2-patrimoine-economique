@@ -49,28 +49,24 @@ const LineChart = ({ people, patrimoines}) => {
   }
 
   const fetchPatrimoineData = async () => {
-
-    const response = await fetch(`${apiUrl}/patrimoine/range?dateDebut=${dateDebut.toISOString()}&dateFin=${dateFin.toISOString()}&day=${day}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch patrimoine data');
-      }
-    
-    const data = await response.json();
-    const labels = data.map(item => `${item.getDay}/${item.month}/${item.year}`);
-    const values = data.map(item => item.valeur);
-    setChartData({
-      labels,
-      datasets: [
-        {
-          label: 'Valeur du Patrimoine par Mois',
-          data: values,
-          fill: true,
-          backgroundColor: 'rgba(75,192,192,0.6)',
-          borderColor: 'rgba(75,192,192,1)',
-        },
-      ],
-    });
-
+    usefetchPatrimoineData(dateDebut, dateFin, day)
+      .then(data => {
+        const labels = data.map(item => `${item.getDay}/${item.month}/${item.year}`);
+        const values = data.map(item => item.valeur);
+        setChartData({
+          labels,
+          datasets: [
+            {
+              label: 'Valeur du Patrimoine par Mois',
+              data: values,
+              fill: true,
+              backgroundColor: 'rgba(75,192,192,0.6)',
+              borderColor: 'rgba(75,192,192,1)',
+            },
+          ],
+        });
+      })
+      .catch(error => console.error('Error fetching patrimoine data:', error));
   };
 
 
