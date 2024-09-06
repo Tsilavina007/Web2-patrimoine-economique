@@ -11,7 +11,7 @@ const NavbarComponent = () => (
     <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ borderColor: "#34495e" }} />
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="ml-auto">
-        <Nav.Link as={Link} to="/possessions" style={{ color: "#ecf0f1", fontSize: "1.1rem", marginLeft: "1rem" }}>
+        <Nav.Link as={Link} to="/possessions"  style={{ color: "#ecf0f1", fontSize: "1.1rem", marginLeft: "1rem" }}>
           Possessions
         </Nav.Link>
       </Nav>

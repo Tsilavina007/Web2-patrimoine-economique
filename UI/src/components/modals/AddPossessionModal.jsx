@@ -12,7 +12,7 @@ const AddPossessionModal = ({
   setTypeArgent,
   libelle,
   setLibelle,
-  amount,
+  amount, 
   setAmount,
   startDate,
   setStartDate,

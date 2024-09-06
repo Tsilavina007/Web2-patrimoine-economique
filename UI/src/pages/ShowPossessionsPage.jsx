@@ -11,18 +11,8 @@ import LineChart from '../components/charts/LineCharts.jsx';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-
-const getDateFin = (dateDebut, amortissement) => {
-  const yearsToZero = 100 / amortissement;
-  const newDateDebut = new Date(dateDebut);
-  return new Date(newDateDebut.setFullYear(newDateDebut.getFullYear() + yearsToZero));
-};
-
-
-
-
-
 const ShowPossessionsPage = ({handleShowAddPossession}) => {
+
 
   const [sumPatrimoine, setSumPatrimoine] = useState(0);
   const [getPatrimoineDate, setGetPatrimoineDate] = useState(new Date());
@@ -49,29 +39,31 @@ const ShowPossessionsPage = ({handleShowAddPossession}) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({date: new Date()}),
     });
-
-    // setPatrimoines(patrimoines.map(patrimoine => patrimoine.person === selectedPerson
-    //   ? { ...patrimoine, possessions: updatedPossessions }
-    //   : patrimoine
-    // ));
   };
 
 
   useEffect(() => {
-    // Fetch people and patrimoines from json-server
     const loadData = async () => {
       const peopleResponse = await fetch(`${apiUrl}/people`);
       const peopleData = await peopleResponse.json();
       setSelectedPerson(peopleData);
       setPersonName(peopleData.name)
+      
+    };
+
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    const loadData = async () => {
       const patrimoinesResponse = await fetch(`${apiUrl}/possession`);
       const patrimoinesData = await patrimoinesResponse.json();
       setSelectedPersonPossessions(patrimoinesData);
       
     };
-  
+
     loadData();
-  }, [selectedPerson, selectedPersonPossessions]);
+  }, []);
 
   return (<>
      <div className="mt-5 p-3" style={{backgroundColor: "#eef2f7"}}>

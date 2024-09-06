@@ -131,7 +131,7 @@ app.get('/patrimoine/range', (req, res) => {
     // Boucler à travers chaque mois entre la date de début et la date de fin
     let currentDate = new Date(startDate);
 
-    while (currentDate < possessionEndDate) { 
+    while (currentDate <= possessionEndDate) { 
       let monthKey = `${currentDate.getDate()}-${currentDate.getMonth()+1}-${currentDate.getFullYear()}`;
       // monthKey = `${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`;
 

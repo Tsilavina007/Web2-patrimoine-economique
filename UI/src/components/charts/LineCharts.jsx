@@ -9,7 +9,7 @@ import 'chart.js/auto';
 import usefetchPatrimoineData from '../../hooks/useFetchPatrimoineData';
 
 const apiUrl = import.meta.env.VITE_API_URL;
-
+ 
 const LineChart = ({ people, patrimoines}) => {
   const [dateDebut, setDateDebut] = useState(new Date());
   const [dateDebutToChange, setDateDebutToChange] = useState(new Date());
