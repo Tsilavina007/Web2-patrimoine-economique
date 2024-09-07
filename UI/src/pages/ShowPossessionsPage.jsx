@@ -44,22 +44,11 @@ const ShowPossessionsPage = ({handleShowAddPossession}) => {
 
   useEffect(() => {
     const loadData = async () => {
-      const peopleResponse = await fetch(`${apiUrl}/people`);
-      const peopleData = await peopleResponse.json();
-      setSelectedPerson(peopleData);
-      setPersonName(peopleData.name)
-      
-    };
-
-    loadData();
-  }, []);
-
-  useEffect(() => {
-    const loadData = async () => {
       const patrimoinesResponse = await fetch(`${apiUrl}/possession`);
       const patrimoinesData = await patrimoinesResponse.json();
       setSelectedPersonPossessions(patrimoinesData);
-      
+      setSelectedPerson(patrimoinesData[0].owner);
+      setPersonName(patrimoinesData[0].owner.name)
     };
 
     loadData();
