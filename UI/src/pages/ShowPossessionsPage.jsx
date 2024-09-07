@@ -52,7 +52,7 @@ const ShowPossessionsPage = ({handleShowAddPossession}) => {
     };
 
     loadData();
-  }, []);
+  }, [selectedPersonPossessions]);
 
   return (<>
      <div className="mt-5 p-3" style={{backgroundColor: "#eef2f7"}}>
