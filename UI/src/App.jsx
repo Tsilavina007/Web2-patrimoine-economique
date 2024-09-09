@@ -116,7 +116,7 @@ function App() {
             <LineChart
               people={people}
               patrimoines={patrimoines}
-            />a
+            />
           }/>
         <Route path="/possessions" element={
             <ShowPossessionsPage 
