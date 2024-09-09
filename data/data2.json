@@ -80,7 +80,7 @@
           "libelle": "Redmi Note 9",
           "amount": 800000,
           "startDate": "2022-12-29T00:00:00.000Z",
-          "endDate": "2024-09-09T05:57:14.982Z",
+          "endDate": null,
           "depreciationRate": 15
         }
       ]
