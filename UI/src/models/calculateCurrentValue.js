@@ -87,6 +87,13 @@ const calculateCurrentValue = (possession, calculateDate) => {
         currentValue = possession.amount;
         break;
     }
+    if (possession.endDate != null) {
+      const endDateNow = new Date(possession.endDate)
+      if (endDateNow < now) {
+        currentValue = 0
+      }
+    }
+
   
     // Arrondir la valeur actuelle à 2 décimales
     return Number(currentValue.toFixed(2));

@@ -51,7 +51,7 @@ function App() {
     };
   
     loadData();
-  }, [people, patrimoines]); // tableau de dépendances vide pour exécuter l'effet uniquement lors du premier rendu
+  }, [people, patrimoines]); 
   
 
 
@@ -113,12 +113,10 @@ function App() {
     <NavbarComponent/>
       <Routes>
         <Route path="/" element={
-          <>
             <LineChart
               people={people}
               patrimoines={patrimoines}
-            />
-          </>
+            />a
           }/>
         <Route path="/possessions" element={
             <ShowPossessionsPage 
