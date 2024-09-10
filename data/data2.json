@@ -77,11 +77,22 @@
             "name": "John Doe"
           },
           "type": "Materiel",
-          "libelle": "Redmi Note 9",
+          "libelle": "Redmi Note 9 (lost)",
           "amount": 800000,
           "startDate": "2022-12-29T00:00:00.000Z",
-          "endDate": null,
+          "endDate": "2024-09-09T06:52:34.996Z",
           "depreciationRate": 15
+        },
+        {
+          "type": "Materiel",
+          "libelle": "Samsung Galaxy S23 (Gifted)",
+          "amount": 1600000,
+          "startDate": "2024-09-09T06:52:14.458Z",
+          "endDate": null,
+          "depreciationRate": 10,
+          "owner": {
+            "name": "John Doe"
+          }
         }
       ]
     }
